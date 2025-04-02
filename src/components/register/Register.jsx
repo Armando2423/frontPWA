@@ -11,17 +11,15 @@ const Register = () => {
   const [error, setError] = useState('');
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
-  useEffect(() => {
-    const updateOnlineStatus = () => setIsOnline(navigator.onLine);
+    useEffect(() => {
+      window.addEventListener("online", () => setIsOnline(true));
+      window.addEventListener("offline", () => setIsOnline(false));
   
-    window.addEventListener("online", updateOnlineStatus);
-    window.addEventListener("offline", updateOnlineStatus);
-  
-    return () => {
-      window.removeEventListener("online", updateOnlineStatus);
-      window.removeEventListener("offline", updateOnlineStatus);
-    };
-  }, []);
+      return () => {
+        window.removeEventListener("online", () => setIsOnline(true));
+        window.removeEventListener("offline", () => setIsOnline(false));
+      };
+    }, []);
   
 
   const handleRegister = async (e) => {
@@ -46,7 +44,7 @@ const Register = () => {
   
       if (response.ok) {
         alert('Registro exitoso. Ahora puedes iniciar sesión.');
-        navigate('/login');
+        navigate('/');
       } else {
         setError(data.message || 'Error al registrarte.');
       }

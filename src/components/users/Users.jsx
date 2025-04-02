@@ -8,11 +8,11 @@ function Users() {
   const [isLoading, setIsLoading] = useState(true); // Estado de carga
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
-  const userRole = localStorage.getItem("userRole");
+  const userRol = localStorage.getItem("userRol");
 
   useEffect(() => {
-    if (userRole === "admin") {
-      fetch("https://backpwa-741q.onrender.com/auth/users")
+    if (userRol === "admin") {
+      fetch("https://backpwa-741q.onrender.com/rute/users")
         .then((response) => {
           if (!response.ok) throw new Error("Error al obtener los usuarios");
           return response.json();
@@ -32,7 +32,7 @@ function Users() {
     } else {
       setIsLoading(false);
     }
-  }, [userRole]);
+  }, [userRol]);
 
   const registerServiceWorker = async () => {
     try {
@@ -106,7 +106,7 @@ function Users() {
   return (
     <div className="page-container">
       <h2 className="page-title">Hi!</h2>
-      {userRole === "admin" ? (
+      {userRol === "admin" ? (
         <div>
           <h2>📋 Usuarios Suscritos</h2>
           {isLoading ? (

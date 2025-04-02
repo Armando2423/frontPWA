@@ -28,9 +28,9 @@ const Login = () => {
           // Verifica si los valores son correctos antes de guardarlos
           
             localStorage.setItem('userId', data.user._id); // Asegúrate de que esto sea correcto
-            localStorage.setItem('userRole', data.user.role); // Asegúrate de que esto sea correcto
+            localStorage.setItem('userRol', data.user.rol); // Asegúrate de que esto sea correcto
             console.log("ID del usuario guardado:", data.user._id);
-            console.log("Rol del usuario guardado:", data.user.role);
+            console.log("Rol del usuario guardado:", data.user.rol);
         
             alert('✅ Login exitoso');
             navigate('/users');
