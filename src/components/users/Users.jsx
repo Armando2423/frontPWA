@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import keys from "../../../keys.json"; // Importa las llaves VAPID
+import keys from "../../../keys.json";
 import { useNavigate } from "react-router-dom";
-import "./Users.css"; // Importamos el archivo CSS
+import "./Users.css";
 
 function Users() {
   const [users, setUsers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // Estado de carga
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
   const userRol = localStorage.getItem("userRol");
@@ -18,7 +20,6 @@ function Users() {
           return response.json();
         })
         .then((data) => {
-          console.log("Usuarios obtenidos:", data);
           const usersWithSubscription = data.filter(
             (user) => user.suscripcion !== null && user.suscripcion !== undefined
           );
@@ -34,73 +35,37 @@ function Users() {
     }
   }, [userRol]);
 
-  const registerServiceWorker = async () => {
-    try {
-      const registration = await navigator.serviceWorker.register("./sw.js", {
-        type: "module",
-      });
-      const existingSubscription = await registration.pushManager.getSubscription();
-      if (existingSubscription) return;
-
-      const permission = await Notification.requestPermission();
-      if (permission !== "granted") return;
-
-      const subscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: keys.publicKey, // Se utiliza la llave pública VAPID
-      });
-
-      if (!userId) return;
-
-      const response = await fetch("https://backpwa-741q.onrender.com/auth/suscripcion", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, suscripcion: subscription.toJSON() }),
-      });
-
-      if (!response.ok) throw new Error(`Error en la solicitud: ${response.status}`);
-      console.log("Suscripción guardada en la base de datos:", await response.json());
-    } catch (error) {
-      console.error("Error en el registro del Service Worker:", error);
-    }
+  const handleSendMessage = (user) => {
+    setSelectedUser(user);
+    setShowModal(true);
   };
 
-  useEffect(() => {
-    registerServiceWorker();
-  }, []);
+  const confirmSendNotification = async () => {
+    if (!selectedUser || !selectedUser.suscripcion) {
+      alert("El usuario no tiene una suscripción válida.");
+      return;
+    }
 
-  const handleSendMessage = async (user) => {
     try {
-      const message = prompt(`Escribe un mensaje para ${user.email}:`);
-      if (!message || !message.trim()) {
-        alert("El mensaje no puede estar vacío.");
-        return;
-      }
-
-      if (!user.suscripcion) {
-        throw new Error(`El usuario ${user.email} no tiene una suscripción válida.`);
-      }
-
-      console.log("Enviando a suscripción:", user.suscripcion);
-
       const response = await fetch("https://backpwa-741q.onrender.com/auth/suscripcionMod", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          suscripcion: user.suscripcion,
-          mensaje: message,
+          suscripcion: selectedUser.suscripcion,
+          mensaje: `Gracias ${selectedUser.name} por usar mi PWA!!`,
         }),
       });
 
       if (!response.ok) throw new Error("Error al enviar el mensaje");
 
-      const data = await response.json();
-      console.log("Mensaje enviado:", data);
-      alert("Mensaje enviado con éxito");
+      console.log("Mensaje enviado");
+      alert("Notificación enviada con éxito");
     } catch (error) {
-      console.error("Error al enviar el mensaje:", error);
+      console.error("Error al enviar la notificación:", error);
       alert(error.message);
     }
+
+    setShowModal(false);
   };
 
   return (
@@ -108,27 +73,27 @@ function Users() {
       <h2 className="page-title">Hi!</h2>
       {userRol === "admin" ? (
         <div>
-          <h2>📋 Usuarios Suscritos</h2>
+          <h2 style={{ color: "white" }}>📋 Usuarios Suscritos</h2>
           {isLoading ? (
             <p>⏳ Cargando usuarios...</p>
           ) : (
             <table className="user-table">
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>📩 Email</th>
-                  <th>✉️ Enviar Mensaje</th>
+                  <th>Nombre</th>
+                  <th>Email</th>
+                  <th>Enviar Mensaje</th>
                 </tr>
               </thead>
               <tbody>
                 {users.length > 0 ? (
                   users.map((user, index) => (
-                    <tr key={user._id || index}>
-                      <td>{user._id}</td>
+                    <tr key={user.email || index}>
+                      <td className="td-td">{user.name}</td>
                       <td>{user.email}</td>
                       <td>
                         <button className="send-message-btn" onClick={() => handleSendMessage(user)}>
-                          Enviar
+                          Enviar Notificación
                         </button>
                       </td>
                     </tr>
@@ -144,6 +109,16 @@ function Users() {
         </div>
       ) : (
         <p className="this-is-p">Thanks!! for using my PWA</p>
+      )}
+
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <p>¿Deseas enviarle una notificación push a {selectedUser?.email}?</p>
+            <button onClick={confirmSendNotification}>Sí, enviar</button>
+            <button onClick={() => setShowModal(false)}>Cancelar</button>
+          </div>
+        </div>
       )}
     </div>
   );
