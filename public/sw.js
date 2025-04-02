@@ -9,12 +9,13 @@ const APP_SHELL_FILES = [
   '/App.css',
   '/App.jsx',
   '/main.jsx',
-  '/components/Home.jsx',
-  '/components/Login.jsx',
-  '/components/Register.jsx',
-  '/icons/sao_1.png',
-  '/icons/sao_2.png',
-  '/icons/sao_3.png',
+ /*  '/components/Home.jsx', */
+  '/components/login/Login.jsx',
+  '/components/register/Register.jsx',
+  '/components/splashScreen/SplashScreen.jsx',
+  '/icons/fire1.png',
+  '/icons/fire2.png',
+  '/icons/fire3.png',
   '/icons/carga.png',
   '/screenshots/cap.png',
   '/screenshots/cap1.png'
@@ -122,9 +123,9 @@ self.addEventListener('sync', event => {
               resolve();
               return;
             }
-
+                // https://backpwa-741q.onrender.com
             let postPromises = usuarios.map(user =>
-              fetch('https://backend-be7l.onrender.com/auth/register', {
+              fetch('https://backpwa-741q.onrender.com/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(user)
