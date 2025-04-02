@@ -12,7 +12,7 @@ function Users() {
 
   useEffect(() => {
     if (userRol === "admin") {
-      fetch("https://backpwa-741q.onrender.com/rute/users")
+      fetch("https://backpwa-741q.onrender.com/auth/users")
         .then((response) => {
           if (!response.ok) throw new Error("Error al obtener los usuarios");
           return response.json();
