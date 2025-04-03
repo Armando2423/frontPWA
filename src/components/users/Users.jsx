@@ -211,24 +211,25 @@ function Users() {
         alert("El mensaje no puede estar vacío.");
         return;
       }
-
+  
+      
       if (!user.suscripcion) {
         throw new Error(`El usuario ${user.email} no tiene una suscripción válida.`);
       }
-
+  
       console.log("Enviando a suscripción:", user.suscripcion);
-
+  
       const response = await fetch("https://backpwa-741q.onrender.com/auth/suscripcionMod", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           suscripcion: user.suscripcion,
-          mensaje: message,
+          mensaje: message, // Asegurar que se envía correctamente
         }),
       });
-
+  
       if (!response.ok) throw new Error("Error al enviar el mensaje");
-
+  
       const data = await response.json();
       console.log("Mensaje enviado:", data);
       alert("Mensaje enviado con éxito");
@@ -237,6 +238,7 @@ function Users() {
       alert(error.message);
     }
   };
+  
   
   return (
     <div className="page-container">
