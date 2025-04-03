@@ -11,8 +11,7 @@ function Users() {
   const userRol = localStorage.getItem("userRol");
 
   // username
-  localStorage.setItem("userName", user.nombre); // Ajusta según el dato real de tu API
-  const userName = localStorage.getItem("userName") || "Usuario";
+  const userName = localStorage.getItem('userName');
 
 
   useEffect(() => {
