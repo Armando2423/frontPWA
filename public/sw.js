@@ -183,15 +183,13 @@ self.addEventListener('activate', event => {
 
 
 self.addEventListener("push", (event) => {
-  console.log("📩 Notificación PUSH recibida", event);
 
-  let data = event.data ? event.data.json() : {}; // Asegurar que haya datos
-  let options = {
-    body: data.mensaje || "Tienes una nueva notificación", // Usar mensaje dinámico
-    image: "./icons/fire1.png",
-    icon: "./icons/fire3.png"
-  };
-
-  self.registration.showNotification("Notificación PUSH", options);
+  let options={
+      body:event.data.text(),
+       body: "Hola, cómo estás?",
+      image: "./icons/sao_1.png",
+  }
+  
+  self.registration.showNotification("Titulo",options); 
+   
 });
-
