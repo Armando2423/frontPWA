@@ -106,7 +106,7 @@ function Users() {
   return (
     <div className="page-container">
       <h2 className="page-title">Bienvenid@</h2>
-      {userRole === "admin" ? (
+      {userRol=== "admin" ? (
         <div>
           <h2>📋 Usuarios Suscritos</h2>
           {isLoading ? (
