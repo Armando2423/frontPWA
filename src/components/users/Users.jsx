@@ -34,13 +34,11 @@ function Users() {
     }
   }, [userRol]);
 
-  // 🔹 Función para registrar el Service Worker y manejar suscripciones push
   const registerServiceWorker = async () => {
     try {
       const registration = await navigator.serviceWorker.register("./sw.js", {
         type: "module",
       });
-
       const existingSubscription = await registration.pushManager.getSubscription();
       if (existingSubscription) return;
 
@@ -71,26 +69,6 @@ function Users() {
     registerServiceWorker();
   }, []);
 
-  // 🔹 Función para mostrar la notificación local en el navegador
-  const showNotification = (message) => {
-    if (Notification.permission === "granted") {
-      new Notification("Nuevo Mensaje", {
-        body: message,
-        icon: "./icons/fire2.png",
-      });
-    } else if (Notification.permission !== "denied") {
-      Notification.requestPermission().then((permission) => {
-        if (permission === "granted") {
-          new Notification("Nuevo Mensaje", {
-            body: message,
-            icon: "./icons/fire2.png",
-          });
-        }
-      });
-    }
-  };
-
-  // 🔹 Función para enviar el mensaje y notificación push
   const handleSendMessage = async (user) => {
     try {
       const message = prompt(`Escribe un mensaje para ${user.email}:`);
@@ -118,10 +96,6 @@ function Users() {
 
       const data = await response.json();
       console.log("Mensaje enviado:", data);
-
-      // 🔹 Mostrar la notificación en el navegador
-      showNotification(message);
-
       alert("Mensaje enviado con éxito");
     } catch (error) {
       console.error("Error al enviar el mensaje:", error);
