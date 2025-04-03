@@ -185,10 +185,10 @@ self.addEventListener("push", (event) => {
 
   let options={
       body:event.data.text(),
-       body: "Esta es una PWA",
+      body: event.data ? event.data.text() : "Nueva notificación",
       image: "./icons/fire2.png",
   }
   
-  self.registration.showNotification("Titulo",options); 
+  self.registration.showNotification("Notificación PWA ",options); 
    
 });
