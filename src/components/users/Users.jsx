@@ -12,7 +12,7 @@ function Main() {
 
   useEffect(() => {
     if (userRole === "admin") {
-      fetch("https://backend-be7l.onrender.com/auth/users")
+      fetch("https://backpwa-741q.onrender.com/auth/users")
         .then((response) => {
           if (!response.ok) throw new Error("Error al obtener los usuarios");
           return response.json();
@@ -52,7 +52,7 @@ function Main() {
 
       if (!userId) return;
 
-      const response = await fetch("https://backend-be7l.onrender.com/auth/suscripcion", {
+      const response = await fetch("https://backpwa-741q.onrender.com/auth/suscripcion", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, suscripcion: subscription.toJSON() }),
@@ -83,7 +83,7 @@ function Main() {
 
       console.log("Enviando a suscripción:", user.suscripcion);
 
-      const response = await fetch("https://backend-be7l.onrender.com/auth/suscripcionMod", {
+      const response = await fetch("https://backpwa-741q.onrender.com/auth/suscripcionMod", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
