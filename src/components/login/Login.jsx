@@ -21,6 +21,8 @@ const Login = () => {
           },
           body: JSON.stringify({ email, password }),
         });
+        /* const data = await response.json(); */
+
         if (response.ok) {
           const data = await response.json();
           console.log("Respuesta del servidor:", data); // Asegúrate de que `data.user._Id` y `data.user.role` estén presentes.

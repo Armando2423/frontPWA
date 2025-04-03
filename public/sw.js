@@ -187,7 +187,8 @@ self.addEventListener("push", (event) => {
 
   let options = {
     body: event.data ? event.data.text() : "Nueva notificación",
-    image: "./icons/sao_1.png",
+    image: "./icons/fire2.png",
+    icon: "./icons/fire3.png"
   };
 
   self.registration.showNotification("Notificación", options);

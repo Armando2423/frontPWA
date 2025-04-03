@@ -43,16 +43,31 @@
     background-color: #f2f2f2;
   }
   
-  .send-message-btn {
-    background-color: blue;
+  .user-table tbody tr{
     color: white;
-    padding: 12px 16px;
-    border-radius: 12px;
+  }
+
+  .user-table tbody tr:nth-child(even) {
+    background-color: #001e2b;
+    color: white; /* Para mejorar la visibilidad del texto */
+  }
+  
+  .send-message-btn {
+    width: 100%;
+    padding: 8.5px;
+    background-color: #ab0068;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);  
     cursor: pointer;
+    font-size: 20px;
+    font-weight: 500;
+    color: rgb(255, 255, 255);
   }
   
   .send-message-btn:hover {
-    background-color: rgb(13, 13, 49);
+    background-color: rgb(255, 0, 85);
   }
   
   .modal {

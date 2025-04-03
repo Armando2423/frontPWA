@@ -121,7 +121,7 @@ function Users() {
       <h2 className="page-title">Bienvenid@</h2>
       {userRol === "admin" ? (
         <div>
-          <h2>📋 Usuarios Suscritos</h2>
+          <h2 style={{textAlign: 'center', color: 'white'}}>Usuarios</h2>
           {isLoading ? (
             <p>⏳ Cargando usuarios...</p>
           ) : (
@@ -130,7 +130,7 @@ function Users() {
                 <tr>
                   <th>ID</th>
                   <th>📩 Email</th>
-                  <th>✉️ Enviar Mensaje</th>
+                  <th>✉️ Enviar notificación</th>
                 </tr>
               </thead>
               <tbody>
@@ -140,8 +140,8 @@ function Users() {
                       <td>{user._id}</td>
                       <td>{user.email}</td>
                       <td>
-                        <button className="send-message-btn" onClick={() => handleSendMessage(user)}>
-                          Enviar
+                        <button className="send-message-btn" onClick={() => handleSendMessage(/* user.email */user)}>
+                          Notificar 
                         </button>
                       </td>
                     </tr>
