@@ -182,7 +182,7 @@ self.addEventListener('activate', event => {
 });
 
 
-self.addEventListener("push", (event) => {
+self.addEventListener("", (event) => {
   console.log("📩 Notificación PUSH recibida", event);
 
   let options = {
