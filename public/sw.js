@@ -182,13 +182,22 @@ self.addEventListener('activate', event => {
 });
 
 
-self.addEventListener("push", (event) => {
-  console.log("📩 Notificación PUSH recibida", event);
+self.addEventListener("push", event => {
+  if (!event.data) return;
 
-  let options = {
-    body: event.data ? event.data.text() : "Nueva notificación",
-    image: "./icons/sao_1.png",
+  const data = event.data.json();
+  console.log("📩 Notificación push recibida:", data);
+
+  const options = {
+    body: data.mensaje || "Tienes una nueva notificación",
+    icon: "/icons/fire1.png",
+    badge: "/icons/fire3.png",
+    vibrate: [200, 100, 200],
+    data: { url: data.url || "/" }, // URL a abrir al hacer clic
   };
 
-  self.registration.showNotification("Notificación", options);
+  event.waitUntil(
+    self.registration.showNotification(data.titulo || "Notificación", options)
+  );
 });
+

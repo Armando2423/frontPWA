@@ -42,6 +42,7 @@ function Users() {
   const registerServiceWorker = async () => {
     try {
       const registration = await navigator.serviceWorker.register("./sw.js", { type: "module" });
+      registration.update();
       const existingSubscription = await registration.pushManager.getSubscription();
       
       if (existingSubscription) {
