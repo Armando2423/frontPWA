@@ -186,8 +186,9 @@ self.addEventListener("push", (event) => {
 
   let options={
       body:event.data.text(),
-       body: "Hola, cómo estás?",
-      image: "./icons/sao_1.png",
+       body: "QUE TAL!",
+      image: "./icons/fire2.png",
+      icon: "./icons/fire3.png",
   }
   
   self.registration.showNotification("Titulo",options); 
