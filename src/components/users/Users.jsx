@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import keys from "../../keys.json"; // Importa las llaves VAPID
+import keys from "../../../keys.json"; // Importa las llaves VAPID
 import { useNavigate } from "react-router-dom";
 import "./Users.css"; // Importamos el archivo CSS
 
