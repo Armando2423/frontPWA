@@ -13,6 +13,7 @@ const APP_SHELL_FILES = [
   '/components/login/Login.jsx',
   '/components/register/Register.jsx',
   '/components/splashScreen/SplashScreen.jsx',
+  '/components/splashScreen/Users.jsx',
   '/icons/fire1.png',
   '/icons/fire2.png',
   '/icons/fire3.png',
@@ -182,13 +183,12 @@ self.addEventListener('activate', event => {
 
 
 self.addEventListener("push", (event) => {
+  console.log("📩 Notificación PUSH recibida", event);
 
-  let options={
-      body:event.data.text(),
-       body: "Hola, cómo estás?",
-      image: "./icons/sao_1.png",
-  }
-  
-  self.registration.showNotification("Titulo",options); 
-   
+  let options = {
+    body: event.data ? event.data.text() : "Nueva notificación",
+    image: "./icons/sao_1.png",
+  };
+
+  self.registration.showNotification("Notificación", options);
 });

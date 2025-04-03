@@ -10,6 +10,11 @@ function Users() {
   const userId = localStorage.getItem("userId");
   const userRol = localStorage.getItem("userRol");
 
+  // username
+  localStorage.setItem("userName", user.nombre); // Ajusta según el dato real de tu API
+  const userName = localStorage.getItem("userName") || "Usuario";
+
+
   useEffect(() => {
     if (userRol === "admin") {
       fetch("https://backpwa-741q.onrender.com/auth/users")
@@ -36,34 +41,42 @@ function Users() {
 
   const registerServiceWorker = async () => {
     try {
-      const registration = await navigator.serviceWorker.register("./sw.js", {
-        type: "module",
-      });
+      const registration = await navigator.serviceWorker.register("./sw.js", { type: "module" });
       const existingSubscription = await registration.pushManager.getSubscription();
-      if (existingSubscription) return;
-
+      
+      if (existingSubscription) {
+        console.log("✅ El usuario ya está suscrito:", existingSubscription);
+        return;
+      }
+  
       const permission = await Notification.requestPermission();
-      if (permission !== "granted") return;
-
+      if (permission !== "granted") {
+        console.error("❌ Permiso de notificaciones denegado");
+        return;
+      }
+  
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: keys.publicKey,
       });
-
+  
+      console.log("✅ Nueva suscripción creada:", subscription);
+  
       if (!userId) return;
-
+  
       const response = await fetch("https://backpwa-741q.onrender.com/auth/suscripcion", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, suscripcion: subscription.toJSON() }),
       });
-
+  
       if (!response.ok) throw new Error(`Error en la solicitud: ${response.status}`);
-      console.log("Suscripción guardada en la base de datos:", await response.json());
+      console.log("✅ Suscripción guardada en la base de datos:", await response.json());
     } catch (error) {
-      console.error("Error en el registro del Service Worker:", error);
+      console.error("❌ Error en el registro del Service Worker:", error);
     }
   };
+  
 
   useEffect(() => {
     registerServiceWorker();
@@ -143,7 +156,7 @@ function Users() {
           )}
         </div>
       ) : (
-        <p>⚠️ No tienes permisos para ver esta página.</p>
+        <p>Bienvenid@ {userName}</p>
       )}
     </div>
   );
