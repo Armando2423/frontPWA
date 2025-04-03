@@ -3,8 +3,9 @@ import keys from "../../../keys.json"; // Importa las llaves VAPID
 import { useNavigate } from "react-router-dom";
 import "./Users.css"; // Importamos el archivo CSS
 
+
 function Users() {
-  const [users, setUsers] = useState([]);
+ /*  const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Estado de carga
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
@@ -82,6 +83,127 @@ function Users() {
     registerServiceWorker();
   }, []);
 
+  const handleSendNotification = async (user) => {
+    if ("Notification" in window) {
+      if (Notification.permission === "granted") {
+          new Notification("¡Notificación activada!");
+      } else if (Notification.permission !== "denied") {
+          Notification.requestPermission().then(permission => {
+              if (permission === "granted") {
+                  new Notification("¡Notificaciones permitidas!");
+              } else {
+                  alert("Las notificaciones están bloqueadas. Habilítalas en la configuración del navegador.");
+              }
+          });
+      } else {
+          alert("Las notificaciones están bloqueadas en la configuración del navegador.");
+      }
+  } else {
+      alert("Tu navegador no soporta notificaciones.");
+  }
+  
+  
+    if (!user.suscripcion || !user.suscripcion.endpoint) {
+      alert("El usuario no tiene suscripción de notificación.");
+      return;
+    }
+  
+    try {
+      const message = prompt(`Escribe un mensaje para ${user.email}:`);
+      if (!message || !message.trim()) {
+        alert("El mensaje no puede estar vacío.");
+        return;
+      }
+  
+      const response = await fetch("https://backendpwa001.onrender.com/send_subscription", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: user.email,
+          title: `Notificación para ${user.nombre}`,
+          body: message,
+          subscription: user.suscripcion,
+        }),
+      });
+  
+      if (!response.ok) throw new Error("Error al enviar la notificación");
+  
+      alert("Notificación enviada con éxito");
+    } catch (error) {
+      console.error("❌ Error al enviar notificación:", error);
+      alert(error.message);
+    }
+  }; */
+
+  // username
+  const userName = localStorage.getItem('userName');
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Estado de carga
+  const navigate = useNavigate();
+  const userId = localStorage.getItem("userId");
+  const userRol = localStorage.getItem("userRol");
+
+  useEffect(() => {
+    // https://backpwa-741q.onrender.com
+    if (userRol === "admin") {
+      fetch("https://backpwa-741q.onrender.com/auth/users")
+        .then((response) => {
+          if (!response.ok) throw new Error("Error al obtener los usuarios");
+          console.log(users.map(user => user.nombre));
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Usuarios obtenidos:", data);
+          const usersWithSubscription = data.filter(
+            (user) => user.suscripcion !== null && user.suscripcion !== undefined
+          );
+          setUsers(usersWithSubscription);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error al cargar los usuarios:", error);
+          setIsLoading(false);
+        });
+    } else {
+      setIsLoading(false);
+    }
+  }, [userRol]);
+
+  const registerServiceWorker = async () => {
+    try {
+      const registration = await navigator.serviceWorker.register("./sw.js", {
+        type: "module",
+      });
+      const existingSubscription = await registration.pushManager.getSubscription();
+      if (existingSubscription) return;
+
+      const permission = await Notification.requestPermission();
+      if (permission !== "granted") return;
+
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: keys.publicKey,
+      });
+
+      if (!userId) return;
+
+      const response = await fetch("https://backpwa-741q.onrender.com/auth/suscripcion", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, suscripcion: subscription.toJSON() }),
+      });
+
+      if (!response.ok) throw new Error(`Error en la solicitud: ${response.status}`);
+      console.log("Suscripción guardada en la base de datos:", await response.json());
+    } catch (error) {
+      console.error("Error en el registro del Service Worker:", error);
+    }
+  };
+
+  useEffect(() => {
+    registerServiceWorker();
+  }, []);
+
   const handleSendMessage = async (user) => {
     try {
       const message = prompt(`Escribe un mensaje para ${user.email}:`);
@@ -115,7 +237,7 @@ function Users() {
       alert(error.message);
     }
   };
-
+  
   return (
     <div className="page-container">
       <h2 className="page-title">Bienvenid@</h2>
@@ -128,7 +250,7 @@ function Users() {
             <table className="user-table">
               <thead>
                 <tr>
-                  <th>ID</th>
+                  <th>Nombre</th>
                   <th>📩 Email</th>
                   <th>✉️ Enviar notificación</th>
                 </tr>
@@ -137,10 +259,10 @@ function Users() {
                 {users.length > 0 ? (
                   users.map((user, index) => (
                     <tr key={user._id || index}>
-                      <td>{user._id}</td>
+                      <td>{user.nombre}</td>
                       <td>{user.email}</td>
                       <td>
-                        <button className="send-message-btn" onClick={() => handleSendMessage(/* user.email */user)}>
+                        <button className="send-message-btn" onClick={() => handleSendMessage(user)}>
                           Notificar 
                         </button>
                       </td>
