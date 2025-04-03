@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import keys from "../../keys.json"; // Importa las llaves VAPID
 import { useNavigate } from "react-router-dom";
-import "./User.css"; // Importamos el archivo CSS
+import "./Users.css"; // Importamos el archivo CSS
 
-function Main() {
+function Users() {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Estado de carga
   const navigate = useNavigate();
@@ -149,4 +149,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default Users;
