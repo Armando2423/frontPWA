@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
 import keys from "../../../keys.json"; // Importa las llaves VAPID
 import { useNavigate } from "react-router-dom";
 import "./Users.css"; // Importamos el archivo CSS
-
+// sergio.reyes.21m@utzmg.edu.mx  
 function Users() {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Estado de carga
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
-  const userRole = localStorage.getItem("userRole");
+  const userRol = localStorage.getItem("userRol");
 
   useEffect(() => {
-    if (userRole === "admin") {
+    if (userRol === "admin") {
       fetch("https://backpwa-741q.onrender.com/auth/users")
         .then((response) => {
           if (!response.ok) throw new Error("Error al obtener los usuarios");
@@ -32,7 +32,7 @@ function Users() {
     } else {
       setIsLoading(false);
     }
-  }, [userRole]);
+  }, [userRol]);
 
   const registerServiceWorker = async () => {
     try {
