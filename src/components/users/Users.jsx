@@ -59,7 +59,7 @@ function Users() {
     try {
       if (!selectedUser || !selectedUser.email) return;
   
-      const response = await fetch("https://backendpwa001.onrender.com/auth/send_subscription", {
+      const response = await fetch("https://backpwa-741q.onrender.com/auth/send_subscription", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
