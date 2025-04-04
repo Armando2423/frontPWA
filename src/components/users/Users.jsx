@@ -41,15 +41,12 @@ function Users() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          suscripcion: selectedUser.suscripcion,
-          mensaje: JSON.stringify({
-            title: "Hola desde RealDesire 😎",
-            body: `Hola ${selectedUser.nombre}, tienes una nueva notificación!`,
-            icon: "/icons/fire3.png",     // Ruta pública relativa a tu PWA
-            image: "/icons/fire2.png"
-          })
+          email: selectedUser.email,
+          title: "Hola desde RealDesire 😎",
+          body: `Hola ${selectedUser.nombre}, tienes una nueva notificación!`,
         }),
       });
+      
   
       if (!response.ok) throw new Error("Error al enviar la notificación");
   
