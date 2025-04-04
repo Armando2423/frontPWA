@@ -34,8 +34,6 @@ function Users() {
 
   const handleSendNotification = async () => {
     if (!selectedUser) return;
-    console.log("Enviando notificación a:", selectedUser.email); // 👈
-  
     setShowModal(false);
   
     try {
@@ -44,9 +42,15 @@ function Users() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           suscripcion: selectedUser.suscripcion,
-          mensaje: `Hola ${selectedUser.email}, tienes una nueva notificación!`,
+          mensaje: JSON.stringify({
+            title: "Hola desde RealDesire 😎",
+            body: `Hola ${selectedUser.nombre}, tienes una nueva notificación!`,
+            icon: "/icons/fire3.png",     // Ruta pública relativa a tu PWA
+            image: "/icons/fire2.png"
+          })
         }),
       });
+  
       if (!response.ok) throw new Error("Error al enviar la notificación");
   
       alert("Notificación enviada con éxito");
@@ -56,7 +60,6 @@ function Users() {
     }
   };
   
-
   
   return (
     <div className="page-container">

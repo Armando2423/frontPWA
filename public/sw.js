@@ -183,14 +183,19 @@ self.addEventListener('activate', event => {
 
 
 self.addEventListener("push", (event) => {
-
-  let options={
-      body:event.data.text(),
-       body: "QUE TAL ekfnken!",
-      image: "./icons/fire2.png",
-      icon: "./icons/fire3.png",
+  if (!event.data) {
+    console.error("Push sin data");
+    return;
   }
-  
-  self.registration.showNotification("Titulo",options); 
-   
+
+  const data = event.data.json(); // 👈 Aquí procesamos el JSON
+
+  const options = {
+    body: data.body,
+    icon: data.icon || "./icons/fire1.png",
+    image: data.image || null,
+    badge: data.badge || "./icons/fire3.png",
+  };
+
+  self.registration.showNotification(data.title || "Notificación", options);
 });
