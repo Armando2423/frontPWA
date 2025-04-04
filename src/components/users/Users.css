@@ -69,8 +69,8 @@
   .send-message-btn:hover {
     background-color: rgb(255, 0, 85);
   }
-  
-  .modal {
+  /* MODAL */
+  .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -80,43 +80,85 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-in-out;
   }
   
-  .modal-content {
-    background: white;
+  .modal {
+    background-color: white;
+    max-height: 200px;
+    height: auto;
+    border-radius: 12px;
     padding: 20px;
-    border-radius: 10px;
     width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s ease-in-out;
   }
   
-  .modal-textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
+  .modal h3 {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 15px;
   }
   
-  .modal-actions {
-    margin-top: 20px;
+  .nameEmail {
+    text-decoration: underline;
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .modal-buttons {
     display: flex;
     justify-content: space-between;
+    margin-top: 15px;
   }
   
-  .close-btn, .send-btn {
-    background-color: #ff6d00;
-    color: white;
-    border: none;
+  .btn-modal {
     padding: 10px 20px;
-    border-radius: 5px;
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
     cursor: pointer;
+    transition: all 0.3s ease-in-out;
   }
   
-  .close-btn:hover, .send-btn:hover {
-    background-color: #e65c00;
-  }
-  
-  .this-is-p{
+  .btn-modal:first-child {
+    background-color: #092c11;
     color: white;
-    font-weight: 700;
   }
+  
+  .btn-modal:first-child:hover {
+    background-color: #218838;
+  }
+  
+  .btn-modal:last-child {
+    background-color: #860713;
+    color: white;
+  }
+  
+  .btn-modal:last-child:hover {
+    background-color: #c82333;
+  }
+  
+  /* Animaciones */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideUp {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
