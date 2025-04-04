@@ -37,7 +37,7 @@ function Users() {
     setShowModal(false);
   
     try {
-      const response = await fetch("https://backpwa-741q.onrender.com/auth/suscripcionMod", {
+      const response = await fetch("https://backpwa-741q.onrender.com/auth/send_subscription", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
