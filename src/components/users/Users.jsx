@@ -32,7 +32,7 @@ function Users() {
     setShowModal(true);
   };
 
-  const handleSendNotification = async () => {
+  /* const handleSendNotification = async () => {
    if (!selectedUser) return;
     setShowModal(false);
 
@@ -52,8 +52,37 @@ function Users() {
       console.error("Error al enviar notificación:", error);
       alert(error.message);
     }
+  }; */
+
+
+  const handleSendNotification= async () => {
+    try {
+      if (!selectedUser || !selectedUser.email) return;
+  
+      const response = await fetch("https://backendpwa001.onrender.com/send_subscription", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: selectedUser.email,
+          title: `Notificación para ${selectedUser.name}`,
+          body: "¡Tienes una nueva notificación!",
+        }),
+      });
+  
+      if (!response.ok) throw new Error("Error al enviar la notificación");
+  
+      const data = await response.json();
+      console.log("Notificación enviada:", data);
+      alert("Notificación enviada con éxito");
+  
+      setShowModal(false); // Cierra el modal después de enviar
+    } catch (error) {
+      console.error("❌ Error al enviar notificación:", error);
+      alert(error.message);
+    }
   };
 
+  
   return (
     <div className="page-container">
       <h2 className="page-title">Usuarios</h2>

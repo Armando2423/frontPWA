@@ -183,14 +183,17 @@ self.addEventListener('activate', event => {
 
 
 self.addEventListener("push", (event) => {
-
-  let options={
-      body:event.data.text(),
-       body: "QUE TAL!",
-      image: "./icons/fire2.png",
-      icon: "./icons/fire3.png",
-  }
+  let data = {};
   
-  self.registration.showNotification("Titulo",options); 
-   
+  if (event.data) {
+    data = event.data.json();
+  }
+
+  const options = {
+    body: data.body || "¡Tienes una nueva notificación!",
+    icon: "./icons/fire3.png",
+    image: "./icons/fire2.png",
+  };
+
+  self.registration.showNotification(data.title || "Notificación", options);
 });
