@@ -33,9 +33,11 @@ function Users() {
   };
 
   const handleSendNotification = async () => {
-   if (!selectedUser) return;
+    if (!selectedUser) return;
+    console.log("Enviando notificación a:", selectedUser.email); // 👈
+  
     setShowModal(false);
-
+  
     try {
       const response = await fetch("https://backpwa-741q.onrender.com/auth/suscripcionMod", {
         method: "POST",
@@ -46,13 +48,14 @@ function Users() {
         }),
       });
       if (!response.ok) throw new Error("Error al enviar la notificación");
-
+  
       alert("Notificación enviada con éxito");
     } catch (error) {
       console.error("Error al enviar notificación:", error);
       alert(error.message);
     }
   };
+  
 
   
   return (
@@ -98,7 +101,7 @@ function Users() {
         ¿Deseas enviar una notificación PUSH a <a className="nameEmail">{selectedUser.email}</a>?
       </h3>
       <div className="modal-buttons">
-        <button className="btn-modal" onClick={handleSendNotification}>Sí</button>
+      <button className="btn-modal" onClick={handleSendNotification}>Sí</button>
         <button className="btn-modal" onClick={() => setShowModal(false)}>No</button>
       </div>
     </div>
