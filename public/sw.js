@@ -195,5 +195,5 @@ self.addEventListener("push", (event) => {
     image: "./icons/fire2.png",
   };
 
-  self.registration.showNotification(data.title || "Notificación", options);
+  self.registration.showNotification('ienefne' || "Notificación", options);
 });
