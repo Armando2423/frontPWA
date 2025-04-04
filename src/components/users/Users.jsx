@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import keys from "../../../keys.json";
+import keys from "../../../keys.json"; // tengo mis keys para el web push (publicKey, privateKey)
 import "./Users.css";
 
 function Users() {
@@ -32,7 +32,7 @@ function Users() {
     setShowModal(true);
   };
 
-  const handleSendNotification = async () => {
+  const handleSendNotification = async (user) => {
    if (!selectedUser) return;
     setShowModal(false);
 
@@ -98,7 +98,7 @@ function Users() {
         ¿Deseas enviar una notificación PUSH a <a className="nameEmail">{selectedUser.email}</a>?
       </h3>
       <div className="modal-buttons">
-        <button className="btn-modal" onClick={handleSendNotification}>Sí</button>
+        <button className="btn-modal" onClick={() =>handleSendNotification(user)}>Sí</button>
         <button className="btn-modal" onClick={() => setShowModal(false)}>No</button>
       </div>
     </div>

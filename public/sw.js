@@ -186,7 +186,7 @@ self.addEventListener("push", (event) => {
 
   let options={
       body:event.data.text(),
-       body: "QUE TAL!",
+       body: "QUE TAL ekfnken!",
       image: "./icons/fire2.png",
       icon: "./icons/fire3.png",
   }
