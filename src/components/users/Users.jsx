@@ -7,27 +7,70 @@ function Users() {
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const userId = localStorage.getItem("userId");
+  const userRol = localStorage.getItem("userRol");
 
   useEffect(() => {
-    fetch("https://backpwa-741q.onrender.com/auth/users")
-      .then((response) => {
-        if (!response.ok) throw new Error("Error al obtener los usuarios");
-        return response.json();
-      })
-      .then((data) => {
-        const usersWithSubscription = data.filter(
-          (user) => user.suscripcion !== null && user.suscripcion !== undefined
-        );
-        setUsers(usersWithSubscription);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error al cargar los usuarios:", error);
-        setIsLoading(false);
+    if (userRol === "admin") {
+      fetch("https://backpwa-741q.onrender.com/auth/users")
+        .then((response) => {
+          if (!response.ok) throw new Error("Error al obtener los usuarios");
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Usuarios obtenidos:", data);
+          const usersWithSubscription = data.filter(
+            (user) => user.suscripcion !== null && user.suscripcion !== undefined
+          );
+          setUsers(usersWithSubscription);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error al cargar los usuarios:", error);
+          setIsLoading(false);
+        });
+    } else {
+      setIsLoading(false);
+    }
+  }, [userRol]);
+
+  const registerServiceWorker = async () => {
+    try {
+      const registration = await navigator.serviceWorker.register("./sw.js", {
+        type: "module",
       });
+      const existingSubscription = await registration.pushManager.getSubscription();
+      if (existingSubscription) return;
+
+      const permission = await Notification.requestPermission();
+      if (permission !== "granted") return;
+
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: keys.publicKey,
+      });
+
+      if (!userId) return;
+
+      const response = await fetch("https://backpwa-741q.onrender.com/auth/suscripcion", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, suscripcion: subscription.toJSON() }),
+      });
+
+      if (!response.ok) throw new Error(`Error en la solicitud: ${response.status}`);
+      console.log("Suscripción guardada en la base de datos:", await response.json());
+    } catch (error) {
+      console.error("Error en el registro del Service Worker:", error);
+    }
+  };
+
+  useEffect(() => {
+    registerServiceWorker();
   }, []);
 
-   const handleOpenModal = (user) => {
+
+  const handleOpenModal = (user) => {
     setSelectedUser(user);
     setShowModal(true);
   };
@@ -42,7 +85,7 @@ function Users() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: selectedUser.email,
-          title: "Hola desde RealDesire 😎",
+          title: "Hola",
           body: `Hola ${selectedUser.nombre}, tienes una nueva notificación!`,
         }),
       });

@@ -114,6 +114,7 @@ const Register = () => {
 
     return (
         <div className="wrapper">
+          
             <div className="back-arrow" onClick={() => navigate(-1)}>
                 <div className="circle">
                     <FaArrowLeft className="icon_back" />
